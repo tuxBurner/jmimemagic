@@ -22,17 +22,17 @@ For more information, please email arimus@users.sourceforge.net
 */
 package net.sf.jmimemagic;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintStream;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 
 /**
@@ -46,7 +46,7 @@ public class Magic
     private static Log log = LogFactory.getLog(Magic.class);
     private static boolean initialized = false;
     private static MagicParser magicParser = null;
-    private static HashMap hintMap = new HashMap();
+    private static Map<String, List<MagicMatcher>> hintMap = new HashMap<String, List<MagicMatcher>>();
 
     /**
      * constructor
@@ -65,10 +65,10 @@ public class Magic
     private static void addHint(String extension, MagicMatcher matcher)
     {
         if (hintMap.keySet().contains(extension)) {
-            ArrayList a = (ArrayList) hintMap.get(extension);
+            List<MagicMatcher> a = hintMap.get(extension);
             a.add(matcher);
         } else {
-            ArrayList a = new ArrayList();
+            List<MagicMatcher> a = new ArrayList<MagicMatcher>();
             a.add(matcher);
             hintMap.put(extension, a);
         }
@@ -88,12 +88,9 @@ public class Magic
             log.debug("initializing");
             magicParser = new MagicParser();
             magicParser.initialize();
-
-            // build hint map
-            Iterator i = magicParser.getMatchers().iterator();
-
-            while (i.hasNext()) {
-                MagicMatcher matcher = (MagicMatcher) i.next();
+            
+            final List<MagicMatcher> matchers = magicParser.getMatchers();
+            for (MagicMatcher matcher : matchers) {
                 String ext = matcher.getMatch().getExtension();
 
                 if ((ext != null) && !ext.trim().equals("")) {
@@ -127,7 +124,7 @@ public class Magic
      *
      * @throws MagicParseException DOCUMENT ME!
      */
-    public static Collection getMatchers()
+    public static List<MagicMatcher> getMatchers()
         throws MagicParseException
     {
         log.debug("getMatchers()");
@@ -136,11 +133,10 @@ public class Magic
             initialize();
         }
 
-        Iterator i = magicParser.getMatchers().iterator();
-        ArrayList m = new ArrayList();
+        List<MagicMatcher> matchers = magicParser.getMatchers();
+        List<MagicMatcher> m = new ArrayList<MagicMatcher>();
 
-        while (i.hasNext()) {
-            MagicMatcher matcher = (MagicMatcher) i.next();
+        for (MagicMatcher matcher: matchers) {
 
             try {
                 m.add(matcher.clone());
@@ -191,15 +187,13 @@ public class Magic
             initialize();
         }
 
-        Collection matchers = magicParser.getMatchers();
+        List<MagicMatcher> matchers = magicParser.getMatchers();
         log.debug("getMagicMatch(byte[]): have " + matchers.size() + " matchers");
 
-        MagicMatcher matcher = null;
+        
         MagicMatch match = null;
-        Iterator i = matchers.iterator();
-
-        while (i.hasNext()) {
-            matcher = (MagicMatcher) i.next();
+        for (MagicMatcher matcher : matchers) {        
+        
 
             log.debug("getMagicMatch(byte[]): trying to match: " +
                 matcher.getMatch().getMimeType());
@@ -264,11 +258,11 @@ public class Magic
 
         long start = System.currentTimeMillis();
 
-        MagicMatcher matcher = null;
+        
         MagicMatch match = null;
 
         // check for extension hints
-        ArrayList checked = new ArrayList();
+        List<MagicMatcher> checked = new ArrayList<MagicMatcher>();
 
         if (extensionHints) {
             log.debug("trying to use hints first");
@@ -284,13 +278,12 @@ public class Magic
                         log.debug("using extension '" + ext + "' for hinting");
                     }
 
-                    Collection c = (Collection) hintMap.get(ext);
+                    List<MagicMatcher> c = hintMap.get(ext);
 
                     if (c != null) {
-                        Iterator i = c.iterator();
-
-                        while (i.hasNext()) {
-                            matcher = (MagicMatcher) i.next();
+                        for (MagicMatcher matcher : c) {
+                            
+                        
 
                             log.debug("getMagicMatch(File): trying to match: " +
                                 matcher.getMatch().getDescription());
@@ -328,13 +321,10 @@ public class Magic
             }
         }
 
-        Collection matchers = magicParser.getMatchers();
+         List<MagicMatcher> matchers = magicParser.getMatchers();
         log.debug("getMagicMatch(File): have " + matchers.size() + " matches");
-
-        Iterator i = matchers.iterator();
-
-        while (i.hasNext()) {
-            matcher = (MagicMatcher) i.next();
+        for (MagicMatcher matcher : matchers) {
+        
 
             if (!checked.contains(matcher)) {
                 log.debug("getMagicMatch(File): trying to match: " +
@@ -382,14 +372,9 @@ public class Magic
             initialize();
         }
 
-        Collection matchers = Magic.getMatchers();
+        List<MagicMatcher> matchers = Magic.getMatchers();
         log.debug("have " + matchers.size() + " matches");
-
-        MagicMatcher matcher = null;
-        Iterator i = matchers.iterator();
-
-        while (i.hasNext()) {
-            matcher = (MagicMatcher) i.next();
+        for (MagicMatcher matcher : matchers) {            
             log.debug("printing");
             printMagicMatcher(stream, matcher, "");
         }
@@ -407,11 +392,9 @@ public class Magic
         stream.println(spacing + "name: " + matcher.getMatch().getDescription());
         stream.println(spacing + "children: ");
 
-        Collection matchers = matcher.getSubMatchers();
-        Iterator i = matchers.iterator();
-
-        while (i.hasNext()) {
-            printMagicMatcher(stream, (MagicMatcher) i.next(), spacing + "  ");
+         Collection<MagicMatcher> subMatchers = matcher.getSubMatchers();
+         for (MagicMatcher magicMatcher : subMatchers) {
+            printMagicMatcher(stream, magicMatcher, spacing + "  ");
         }
     }
 
@@ -436,11 +419,9 @@ public class Magic
         stream.println(spacing + "comparator: " + match.getComparator());
         stream.println(spacing + "=============================");
 
-        Collection submatches = match.getSubMatches();
-        Iterator i = submatches.iterator();
-
-        while (i.hasNext()) {
-            printMagicMatch(stream, (MagicMatch) i.next(), spacing + "    ");
+        List<MagicMatch> subMatches = match.getSubMatches();
+        for (MagicMatch magicMatch : subMatches) {
+            printMagicMatch(stream, magicMatch, spacing + "    ");
         }
     }
 

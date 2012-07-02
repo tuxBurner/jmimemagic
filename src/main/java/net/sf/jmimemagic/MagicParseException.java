@@ -32,6 +32,11 @@ package net.sf.jmimemagic;
 public class MagicParseException extends Exception
 {
     /**
+     * 
+     */
+    private static final long serialVersionUID = 8784355416847841008L;
+
+    /**
      * Default constructor
      */
     public MagicParseException()

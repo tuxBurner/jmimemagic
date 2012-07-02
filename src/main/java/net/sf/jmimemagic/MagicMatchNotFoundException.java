@@ -31,6 +31,11 @@ package net.sf.jmimemagic;
  */
 public class MagicMatchNotFoundException extends Exception
 {
+    /**
+     * 
+     */
+    private static final long serialVersionUID = -2939562214801201909L;
+
     /** 
      * constructor 
      */

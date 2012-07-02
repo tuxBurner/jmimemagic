@@ -22,9 +22,14 @@ For more information, please email arimus@users.sourceforge.net
 */
 package net.sf.jmimemagic;
 
+import java.io.ByteArrayOutputStream;
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
 import org.xml.sax.Attributes;
 import org.xml.sax.ContentHandler;
 import org.xml.sax.ErrorHandler;
@@ -35,14 +40,6 @@ import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.XMLReaderFactory;
-
-import java.io.ByteArrayOutputStream;
-
-import java.nio.ByteBuffer;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
 
 
 /**
@@ -84,11 +81,11 @@ public class MagicParser extends DefaultHandler implements ContentHandler, Error
     protected static final boolean DEFAULT_SCHEMA_FULL_CHECKING = false;
     private boolean initialized = false;
     private XMLReader parser = null;
-    private ArrayList stack = new ArrayList();
-    private Collection matchers = new ArrayList();
+    private List<MagicMatcher> stack = new ArrayList<MagicMatcher>();
+    private List<MagicMatcher> matchers = new ArrayList<MagicMatcher>();
     private MagicMatcher matcher = null;
     private MagicMatch match = null;
-    private HashMap properties = null;
+    private HashMap<String,String> properties = null;
     private String finalValue = "";
     private boolean isMimeType = false;
     private boolean isExtension = false;
@@ -188,46 +185,27 @@ public class MagicParser extends DefaultHandler implements ContentHandler, Error
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @return DOCUMENT ME!
-     */
-    public Collection getMatchers()
+    
+    public List<MagicMatcher> getMatchers()
     {
         return matchers;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     */
+    
     public void startDocument()
         throws SAXException
     {
         log.debug("startDocument()");
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     */
+    
     public void endDocument()
         throws SAXException
     {
         log.debug("endDocument()");
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param target DOCUMENT ME!
-     * @param data DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     */
+    
     public void processingInstruction(String target, String data)
         throws SAXException
     {
@@ -356,7 +334,7 @@ public class MagicParser extends DefaultHandler implements ContentHandler, Error
                 // save the property to our map
                 if ((name != null) && (value != null)) {
                     if (properties == null) {
-                        properties = new HashMap();
+                        properties = new HashMap<String,String>();
                     }
 
                     if (!properties.containsKey(name)) {
@@ -467,44 +445,24 @@ public class MagicParser extends DefaultHandler implements ContentHandler, Error
         }
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param ex DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     */
+    
     public void warning(SAXParseException ex)
         throws SAXException
     {
-        // FIXME
+     
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param ex DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     */
+   
     public void error(SAXParseException ex)
         throws SAXException
     {
-        // FIXME
         throw ex;
     }
 
-    /**
-     * DOCUMENT ME!
-     *
-     * @param ex DOCUMENT ME!
-     *
-     * @throws SAXException DOCUMENT ME!
-     */
+   
     public void fatalError(SAXParseException ex)
         throws SAXException
     {
-        // FIXME
         throw ex;
     }
 
@@ -519,9 +477,6 @@ public class MagicParser extends DefaultHandler implements ContentHandler, Error
     {
         int beg = 0;
         int end = 0;
-        int c1;
-        int c2;
-        int c3;
         int chr;
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
 

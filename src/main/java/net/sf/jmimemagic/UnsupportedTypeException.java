@@ -32,6 +32,11 @@ package net.sf.jmimemagic;
 public class UnsupportedTypeException extends Exception
 {
     /**
+     * 
+     */
+    private static final long serialVersionUID = 4225590514782456873L;
+
+    /**
      * Default constructor
      */
     public UnsupportedTypeException()

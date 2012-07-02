@@ -117,7 +117,7 @@ public class TextFileDetector implements MagicDetector
      * @return DOCUMENT ME!
      */
     public String[] process(byte[] data, int offset, int length, long bitmask, char comparator,
-        String mimeType, Map params)
+        String mimeType, Map<String,String> params)
     {
         log.debug("processing stream data");
 
@@ -159,7 +159,7 @@ public class TextFileDetector implements MagicDetector
      * @return DOCUMENT ME!
      */
     public String[] process(File file, int offset, int length, long bitmask, char comparator,
-        String mimeType, Map params)
+        String mimeType, Map<String,String> params)
     {
         log.debug("processing file data");
 

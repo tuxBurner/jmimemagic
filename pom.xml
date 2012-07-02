@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
 
   <!-- General for All Maven projects (lib and proj) -->
-  
+
   <groupId>net.sf.jmimemagic</groupId>
   <artifactId>jmimemagic</artifactId>
   <version>0.1.3-SNAPSHOT</version>
@@ -17,92 +16,49 @@
   <developers>
     <developer>
       <id>arimus</id>
-	  <name>David Castro</name>
-	  <email>arimus@users.sourceforge.net</email>
+      <name>David Castro</name>
+      <email>arimus@users.sourceforge.net</email>
       <roles>
-         <role>Developer</role>
+        <role>Developer</role>
       </roles>
-	  <organization>jmimemagic</organization>
+      <organization>jmimemagic</organization>
       <timezone>-7</timezone>
     </developer>
 
     <developer>
-	  <id>ndjones</id>
-	  <name>Nate Jones</name>
-	  <email>ndjones@users.sourceforge.net</email>
+      <id>ndjones</id>
+      <name>Nate Jones</name>
+      <email>ndjones@users.sourceforge.net</email>
       <roles>
-         <role>Developer</role>
+        <role>Developer</role>
       </roles>
-	  <organization>jmimemagic</organization>
+      <organization>jmimemagic</organization>
       <timezone>-7</timezone>
     </developer>
   </developers>
 
   <!-- use the following if you're not using a snapshot version. -->
-  <distributionManagement>
-    <repository>
-      <id>jmimemagic-repo</id>
-      <name>jMimeMagic Repo</name>
-      <url>scm:svn:https://svn.sourceforge.net/svnroot/jmimemagic/trunk</url>
-    </repository>
-    <!-- use the following if you ARE using a snapshot version. -->
-    <snapshotRepository>
-      <id>jmimemagic-repo</id>
-      <name>jMimeMagic Repo</name>
-      <url>scm:svn:https://svn.sourceforge.net/svnroot/jmimemagic/trunk</url>
-    </snapshotRepository>
-  </distributionManagement>
+  <!-- micromata addon -->
+<!--   <distributionManagement> -->
+<!--     <repository> -->
+<!--       <id>jmimemagic-repo</id> -->
+<!--       <name>jMimeMagic Repo</name> -->
+<!--       <url>scm:svn:https://svn.sourceforge.net/svnroot/jmimemagic/trunk</url> -->
+<!--     </repository> -->
+<!--     use the following if you ARE using a snapshot version. -->
+<!--     <snapshotRepository> -->
+<!--       <id>jmimemagic-repo</id> -->
+<!--       <name>jMimeMagic Repo</name> -->
+<!--       <url>scm:svn:https://svn.sourceforge.net/svnroot/jmimemagic/trunk</url> -->
+<!--     </snapshotRepository> -->
+<!--   </distributionManagement> -->
 
-
-  <!-- Repositories, currently used to make hibernate3:schema-export and jalopy work -->
-
-  <!--
-  <repositories>
-    <repository>
-      <id>Codehaus Snapshots</id>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </repository>
-    <repository>
-      <id>maven2-repository.dev.java.net</id>
-      <name>Java.net Repository for Maven</name>
-      <url>http://download.java.net/maven/2</url>
-      <layout>default</layout>
-    </repository>
-    <repository>
-      <id>repository.jboss.com</id>
-      <name>JBoss Repository for Maven</name>
-      <url>http://repository.jboss.com/maven2</url>
-      <layout>default</layout>
-    </repository>
-  </repositories>
-  -->
-
-  <!-- Repositories, currently used to make hibernate3:schema-export work -->
-
-  <!--
-  <pluginRepositories>
-    <pluginRepository>
-      <id>Codehaus Snapshots</id>
-      <url>http://snapshots.repository.codehaus.org</url>
-      <snapshots>
-        <enabled>true</enabled>
-      </snapshots>
-      <releases>
-        <enabled>false</enabled>
-      </releases>
-    </pluginRepository>
-  </pluginRepositories>
-  -->
 
   <build>
 
-    <!-- turning filter on for resources and test, note - test resources dir will override any file with the same name in main resources when a test is ran.  -->
+    <!-- turning filter on for resources and test, note - test resources 
+      dir will override any file with the same name in main resources when a test 
+      is ran. -->
     <filters>
       <filter>src/main/filters/filter.properties</filter>
     </filters>
@@ -133,27 +89,6 @@
 
     <plugins>
 
-      <!-- Code format java files, use mvn jalopy:format -->
-      <!--
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>jalopy-maven-plugin</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <configuration>
-          <convention>geekoffice/jalopy.xml</convention>
-          <failOnError>false</failOnError>
-          <fileFormat>UNIX</fileFormat>
-        </configuration>
-        <executions>
-          <execution>
-            <phase>install</phase>
-            <goals>
-              <goal>format</goal>
-            </goals>
-          </execution>
-        </executions>
-      </plugin>
-      -->
 
       <!-- compile in jdk 1.5 -->
       <plugin>
@@ -169,19 +104,24 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
-        <version>2.3</version>
+        <version>2.4</version>
         <configuration>
           <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
-
-      <!--
-      <plugin>
-        <groupId>org.codehaus.mojo</groupId>
-        <artifactId>exec-maven-plugin</artifactId>
-        <version>1.2.1</version>
-      </plugin>
-      -->
+      <!-- micromata addon -->
+      
+    <plugin>
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-release-plugin</artifactId>
+      <version>2.3</version>
+      <configuration>
+        <releaseProfiles>prodhetzner</releaseProfiles>
+        <useReleaseProfile>true</useReleaseProfile>
+        <tagBase>https://svn.micromata.de/svn/medienplattform/tags/jmimemagic/</tagBase>
+        <developmentVersion>0.1.3-SNAPSHOT</developmentVersion>
+      </configuration>
+    </plugin>
 
     </plugins>
 
@@ -190,8 +130,8 @@
 
       <extension>
         <groupId>org.apache.maven.wagon</groupId>
-         <artifactId>wagon-ssh-external</artifactId>
-         <version>1.0-alpha-5</version>
+        <artifactId>wagon-ssh-external</artifactId>
+        <version>1.0-alpha-5</version>
       </extension>
 
     </extensions>
@@ -237,33 +177,33 @@
       <scope>test</scope>
     </dependency>
 
-	<dependency>
-	  <groupId>oro</groupId>
-	  <artifactId>oro</artifactId>
-	  <version>2.0.8</version>
-	  <scope>compile</scope>
+    <dependency>
+      <groupId>oro</groupId>
+      <artifactId>oro</artifactId>
+      <version>2.0.8</version>
+      <scope>compile</scope>
     </dependency>
 
-	<dependency>
-	  <groupId>xerces</groupId>
-	  <artifactId>xerces</artifactId>
-	  <version>2.4.0</version>
-	  <scope>runtime</scope>
-	</dependency>
+    <dependency>
+      <groupId>xerces</groupId>
+      <artifactId>xerces</artifactId>
+      <version>2.4.0</version>
+      <scope>runtime</scope>
+    </dependency>
 
-	<dependency>
-	  <groupId>xml-apis</groupId>
-	  <artifactId>xml-apis</artifactId>
-	  <version>1.0.b2</version>
-	  <scope>compile</scope>
-	</dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xml-apis</artifactId>
+      <version>1.0.b2</version>
+      <scope>compile</scope>
+    </dependency>
 
-	<dependency>
-	  <groupId>xml-apis</groupId>
-	  <artifactId>xmlParserAPIs</artifactId>
-	  <version>2.0.2</version>
-	  <scope>compile</scope>
-	</dependency>
+    <dependency>
+      <groupId>xml-apis</groupId>
+      <artifactId>xmlParserAPIs</artifactId>
+      <version>2.0.2</version>
+      <scope>compile</scope>
+    </dependency>
 
   </dependencies>
 
@@ -272,4 +212,39 @@
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
   </properties>
 
+  <!-- micromata addon -->
+
+  <scm>
+    <url>
+      https://svn.micromata.de/svn/medienplattform/trunk/jmimemagic
+    </url>
+    <connection>
+      scm:svn:https://svn.micromata.de/svn/medienplattform/trunk/jmimemagic
+    </connection>
+  </scm>
+  <issueManagement>
+    <system>jira</system>
+    <url>https://team.micromata.de/jira/browse/MEDIAPLATTFORM</url>
+  </issueManagement>
+  <repositories>
+    <repository>
+      <id>nexus sonatype proxy</id>
+      <url>http://repo.micromata.priv:8081/nexus/content/repositories/medienplattform-release/</url>
+    </repository>
+  </repositories>
+  
+  <distributionManagement>
+    <repository>
+      <id>Releases-repository</id>
+      <name>Medienplattform releases repository</name>
+      <url>http://repo.micromata.priv:8081/nexus/content/repositories/medienplattform-release/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </repository>
+    <snapshotRepository>
+      <id>Snapshot-repository</id>
+      <name>Medienplattform snapshot repository</name>
+      <url>http://repo.micromata.priv:8081/nexus/content/repositories/medienplattform-snapshot/</url>
+      <uniqueVersion>true</uniqueVersion>
+    </snapshotRepository>
+  </distributionManagement>
 </project>

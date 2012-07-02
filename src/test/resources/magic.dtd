@@ -1,15 +1,17 @@
-<!ELEMENT magic (info?,match-list)>
+<!ELEMENT magic (info?,detectorlist)>
 <!ELEMENT info (version?,author?,description?)>
 <!ELEMENT version (#PCDATA)>
 <!ELEMENT author (#PCDATA)>
 <!ELEMENT description (#PCDATA)>
-<!ELEMENT match-list (match*)>
-<!ELEMENT match (mimetype,extension,description,test,match-list?)>
+<!ELEMENT detectorlist (detector*)>
+<!ELEMENT detector (mimetype,extension,designation,test,childlist?)>
 <!ELEMENT extension (#PCDATA)>
 <!ELEMENT mimetype (#PCDATA)>
+<!ELEMENT designation (#PCDATA)>
 <!ELEMENT test (#PCDATA)>
 <!ATTLIST test offset CDATA "0">
-<!ATTLIST test length CDATA "0">
 <!ATTLIST test type CDATA "string">
-<!ATTLIST test bitmask CDATA "">
 <!ATTLIST test comparator CDATA "=">
+<!ELEMENT childlist (detector+)>
+	       
+               

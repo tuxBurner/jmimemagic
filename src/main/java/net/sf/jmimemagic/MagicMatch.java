@@ -22,16 +22,14 @@ For more information, please email arimus@users.sourceforge.net
 */
 package net.sf.jmimemagic;
 
+import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-
-import java.nio.ByteBuffer;
-
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
 
 /**
@@ -56,8 +54,8 @@ public class MagicMatch implements Cloneable
     private String type = "";
     private long bitmask = 0xFFFFFFFFL;
     private char comparator = '\0';
-    private ArrayList subMatches = new ArrayList(0);
-    private Map properties;
+    private List<MagicMatch> subMatches = new ArrayList<MagicMatch>(0);
+    private Map<String,String> properties;
 
     /** 
      * constructor 
@@ -276,7 +274,7 @@ public class MagicMatch implements Cloneable
      *
      * @param properties DOCUMENT ME!
      */
-    public void setProperties(Map properties)
+    public void setProperties(Map<String,String> properties)
     {
         this.properties = properties;
     }
@@ -286,7 +284,7 @@ public class MagicMatch implements Cloneable
      *
      * @return the properties for this magic match
      */
-    public Map getProperties()
+    public Map<String,String> getProperties()
     {
         return properties;
     }
@@ -307,7 +305,7 @@ public class MagicMatch implements Cloneable
      *
      * @param a a collection of submatches
      */
-    public void setSubMatches(Collection a)
+    public void setSubMatches(List<MagicMatch> a)
     {
         log.debug("setting submatches for '" + getDescription() + "'");
         subMatches.clear();
@@ -319,7 +317,7 @@ public class MagicMatch implements Cloneable
      *
      * @return a collection of submatches
      */
-    public Collection getSubMatches()
+    public List<MagicMatch> getSubMatches()
     {
         return subMatches;
     }
@@ -337,14 +335,10 @@ public class MagicMatch implements Cloneable
             return true;
         }
 
-        Collection submatches = getSubMatches();
-        Iterator i = submatches.iterator();
-        MagicMatch m = null;
+        List<MagicMatch> submatches = getSubMatches();
 
-        while (i.hasNext()) {
-            m = (MagicMatch) i.next();
-
-            if (m.descriptionMatches(desc)) {
+        for (MagicMatch magicMatch : submatches) {
+            if (magicMatch.descriptionMatches(desc)) {
                 return true;
             }
         }
@@ -365,14 +359,10 @@ public class MagicMatch implements Cloneable
             return true;
         }
 
-        Collection submatches = getSubMatches();
-        Iterator i = submatches.iterator();
-        MagicMatch m = null;
-
-        while (i.hasNext()) {
-            m = (MagicMatch) i.next();
-
-            if (m.mimeTypeMatches(desc)) {
+        List<MagicMatch> submatches = getSubMatches();
+        
+        for (MagicMatch magicMatch : submatches) {
+            if (magicMatch.mimeTypeMatches(desc)) {
                 return true;
             }
         }
@@ -400,24 +390,16 @@ public class MagicMatch implements Cloneable
         clone.setOffset(offset);
 
         // these properties should only be String types, so we shouldn't have to clone them
-        HashMap m = new HashMap();
+        HashMap<String,String> m = new HashMap<String,String>();
         m.putAll(properties);
         clone.setProperties(m);
-
-        Iterator i = subMatches.iterator();
-        ArrayList a = new ArrayList();
-
-        while (i.hasNext()) {
-            MagicMatch mm = (MagicMatch) i.next();
-            a.add(mm);
-        }
-
+        
+        ArrayList<MagicMatch> a = new ArrayList<MagicMatch>(subMatches);
         clone.setSubMatches(a);
 
         clone.setTest(test);
         clone.setType(type);
 
-        // TODO Auto-generated method stub
         return clone;
     }
 }
